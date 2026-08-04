@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Cheem Hub Key</title>
     <style>
         * {
@@ -38,7 +38,10 @@
             margin-bottom: 30px;
         }
 
-        .header .icon { font-size: 3rem; margin-bottom: 6px; }
+        .header .icon {
+            font-size: 3rem;
+            margin-bottom: 6px;
+        }
         .header h1 {
             font-size: 2.4rem;
             font-weight: 700;
@@ -46,7 +49,12 @@
             text-shadow: 0 0 20px rgba(247, 201, 72, 0.25);
             letter-spacing: 1px;
         }
-        .header p { color: #cdd0e6; font-size: 1rem; margin-top: 4px; opacity: 0.9; }
+        .header p {
+            color: #cdd0e6;
+            font-size: 1rem;
+            margin-top: 4px;
+            opacity: 0.9;
+        }
 
         .warning {
             background: rgba(247, 201, 72, 0.08);
@@ -74,6 +82,7 @@
             font-size: 1rem;
             cursor: pointer;
             transition: 0.2s;
+            box-shadow: 0 4px 14px rgba(88, 101, 242, 0.3);
         }
         .discord-section .btn-discord:hover {
             transform: translateY(-2px);
@@ -92,8 +101,14 @@
             gap: 10px;
             border: 1px solid #2a2a40;
         }
-        .verify-section span { color: #cdd0e6; font-weight: 500; }
-        .verify-section .status { color: #51cf66; font-weight: 600; }
+        .verify-section span {
+            color: #cdd0e6;
+            font-weight: 500;
+        }
+        .verify-section .status {
+            color: #51cf66;
+            font-weight: 600;
+        }
         .verify-section .btn-verify {
             background: #2a2a45;
             border: 1px solid #4a4a6a;
@@ -105,7 +120,9 @@
             font-weight: 500;
             font-size: 0.9rem;
         }
-        .verify-section .btn-verify:hover { background: #3a3a5a; }
+        .verify-section .btn-verify:hover {
+            background: #3a3a5a;
+        }
 
         .key-buttons {
             display: grid;
@@ -132,8 +149,16 @@
             transform: translateY(-3px);
             box-shadow: 0 8px 24px rgba(247, 201, 72, 0.08);
         }
-        .key-btn .label { font-weight: 700; color: #f7c948; font-size: 1.15rem; margin-bottom: 4px; }
-        .key-btn .desc { color: #aab; font-size: 0.85rem; }
+        .key-btn .label {
+            font-weight: 700;
+            color: #f7c948;
+            font-size: 1.15rem;
+            margin-bottom: 4px;
+        }
+        .key-btn .desc {
+            color: #aab;
+            font-size: 0.85rem;
+        }
         .key-btn .badge {
             display: inline-block;
             background: rgba(247, 201, 72, 0.12);
@@ -157,16 +182,32 @@
             text-align: center;
             border: 1px solid #2a2a40;
         }
-        .why-item .icon { font-size: 1.8rem; margin-bottom: 4px; }
-        .why-item h4 { color: #f7c948; font-size: 0.95rem; margin-bottom: 4px; }
-        .why-item p { color: #aab; font-size: 0.82rem; line-height: 1.4; }
+        .why-item .icon {
+            font-size: 1.8rem;
+            margin-bottom: 4px;
+        }
+        .why-item h4 {
+            color: #f7c948;
+            font-size: 0.95rem;
+            margin-bottom: 4px;
+        }
+        .why-item p {
+            color: #aab;
+            font-size: 0.82rem;
+            line-height: 1.4;
+        }
 
         .community {
             text-align: center;
             padding-top: 18px;
             border-top: 1px solid #2a2a40;
         }
-        .community .tag { color: #f7c948; font-weight: 600; font-size: 1.05rem; letter-spacing: 2px; }
+        .community .tag {
+            color: #f7c948;
+            font-weight: 600;
+            font-size: 1.05rem;
+            letter-spacing: 2px;
+        }
 
         .toast {
             position: fixed;
@@ -184,14 +225,28 @@
             pointer-events: none;
             z-index: 999;
         }
-        .toast.show { opacity: 1; }
+        .toast.show {
+            opacity: 1;
+        }
 
         @media (max-width: 650px) {
-            .container { padding: 24px 18px; }
-            .key-buttons { grid-template-columns: 1fr; }
-            .why-section { grid-template-columns: 1fr; }
-            .header h1 { font-size: 1.8rem; }
-            .verify-section { flex-direction: column; align-items: stretch; text-align: center; }
+            .container {
+                padding: 24px 18px;
+            }
+            .key-buttons {
+                grid-template-columns: 1fr;
+            }
+            .why-section {
+                grid-template-columns: 1fr;
+            }
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            .verify-section {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
         }
     </style>
 </head>
@@ -204,7 +259,9 @@
             <p>Xác minh nhanh, hoàn thành vượt lĩnh và nhận key truy cập trong vài phút.</p>
         </div>
 
-        <div class="warning">⚠️ Vui lòng tải VPN hoặc Proxy trước khi lấy key. Lootlab có thể chặn kết nối VPN, khiến bạn không thể hoàn thành bước xác minh.</div>
+        <div class="warning">
+            ⚠️ Vui lòng tải VPN hoặc Proxy trước khi lấy key. Lootlab có thể chặn kết nối VPN, khiến bạn không thể hoàn thành bước xác minh.
+        </div>
 
         <div class="discord-section">
             <button class="btn-discord" id="joinDiscord">💬 JOIN DISCORD</button>
@@ -217,13 +274,11 @@
         </div>
 
         <div class="key-buttons">
-            <!-- LOOTLAB -->
             <a class="key-btn" id="btnLootlab" href="#">
                 <div class="label">🎯 LẤY KEY QUA LOOTLAB</div>
                 <div class="desc">Nhanh hơn, ưu tiên sử dụng.</div>
                 <span class="badge">🔥 Hot</span>
             </a>
-            <!-- WORKINK -->
             <a class="key-btn" id="btnWorkink" href="#">
                 <div class="label">📎 LẤY KEY DỰ PHÒNG QUA WORKINK</div>
                 <div class="desc">Sử dụng khi Lootlab không hoạt động.</div>
@@ -257,8 +312,8 @@
     <div class="toast" id="toast"></div>
 
     <script>
-        // ===== CONFIG =====
-        const GENERATOR_URL = "https://meoz-generator.onrender.com"; // THAY BẰNG URL GENERATOR CỦA BẠN
+        // ===== CẤU HÌNH =====
+        const GENERATOR_URL = "https://meoz-generator.onrender.com"; // THAY BẰNG URL GENERATOR THẬT
         const LOOTLAB_URL = "https://lootlab.xyz/verify";
         const WORKINK_URL = "https://workink.cc/verify";
 
@@ -267,10 +322,12 @@
             toast.textContent = msg;
             toast.classList.add('show');
             clearTimeout(toast._timer);
-            toast._timer = setTimeout(() => { toast.classList.remove('show'); }, 2500);
+            toast._timer = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
         }
 
-        // ===== TẠO TOKEN =====
+        // ===== TẠO TOKEN NGẪU NHIÊN 32 KÝ TỰ =====
         function generateToken() {
             const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
             let token = '';
@@ -280,19 +337,16 @@
             return token;
         }
 
-        // ===== LƯU TOKEN VÀ CHUYỂN HƯỚNG =====
+        // ===== REDIRECT ĐẾN LOOTLAB/WORKINK VỚI TOKEN =====
         function redirectToGenerator(source) {
             const token = generateToken();
-            // Lưu token với thời gian hết hạn (5 phút)
             const expiry = Date.now() + 300000; // 5 phút
             sessionStorage.setItem('meoz_token', token);
             sessionStorage.setItem('meoz_expiry', expiry.toString());
             sessionStorage.setItem('meoz_source', source);
 
-            // Chuyển hướng đến Lootlab/Workink với token callback
-            // Sau khi vượt captcha, họ sẽ redirect về generator với token này
             const returnUrl = GENERATOR_URL + '?token=' + token + '&source=' + source;
-            const redirectUrl = source === 'lootlab' 
+            const redirectUrl = source === 'lootlab'
                 ? LOOTLAB_URL + '?redirect=' + encodeURIComponent(returnUrl)
                 : WORKINK_URL + '?redirect=' + encodeURIComponent(returnUrl);
 
@@ -300,26 +354,26 @@
         }
 
         // ===== NÚT LOOTLAB =====
-        document.getElementById('btnLootlab').addEventListener('click', function(e) {
+        document.getElementById('btnLootlab').addEventListener('click', (e) => {
             e.preventDefault();
             redirectToGenerator('lootlab');
         });
 
         // ===== NÚT WORKINK =====
-        document.getElementById('btnWorkink').addEventListener('click', function(e) {
+        document.getElementById('btnWorkink').addEventListener('click', (e) => {
             e.preventDefault();
             redirectToGenerator('workink');
         });
 
         // ===== JOIN DISCORD =====
-        document.getElementById('joinDiscord').addEventListener('click', function() {
+        document.getElementById('joinDiscord').addEventListener('click', () => {
             showToast('🔗 Đang chuyển đến Discord...');
             // Thay link Discord của bạn
             // window.open('https://discord.gg/your-invite', '_blank');
         });
 
         // ===== VERIFY =====
-        document.getElementById('verifyBtn').addEventListener('click', function() {
+        document.getElementById('verifyBtn').addEventListener('click', () => {
             showToast('✅ Xác minh thành công!');
         });
     </script>
