@@ -1,4 +1,3 @@
-// Danh sách Key Premium cố định
 const PREMIUM_KEYS = [
     "Ch33m-22Bv-66Yb-UUHB-Premium",
     "Ch33m-Bvvg-66hg-Uggb-Premium"
@@ -21,7 +20,7 @@ export default function handler(req, res) {
         return res.status(200).json({ valid: true, type: "PREMIUM" });
     }
 
-    // 2. Kiểm tra Key Free được tạo ra từ serverless memory
+    // 2. Kiểm tra Key Free định dạng Freemium-xxxx-xxxx-xxxx
     if (global.activeFreeTokens && global.activeFreeTokens.has(cleanKey)) {
         return res.status(200).json({ valid: true, type: "FREEMIUM" });
     }
