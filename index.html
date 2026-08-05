@@ -3,30 +3,33 @@
     let isUserAuthenticated = false;
     let currentSession = "";
 
-    window.addEventListener('DOMContentLoaded', async () => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const sessionParam = urlParams.get('session');
+    window.addEventListener('DOMContentLoaded', () => {
+        try {
+            const urlParams = new URLSearchParams(window.location.search);
+            const sessionParam = urlParams.get('session');
 
-        const badge = document.getElementById('statusBadge');
-        const genBtn = document.getElementById('genBtn');
-        const warningBox = document.getElementById('unauthWarning');
+            const badge = document.getElementById('statusBadge');
+            const genBtn = document.getElementById('genBtn');
+            const warningBox = document.getElementById('unauthWarning');
 
-        if (sessionParam) {
-            currentSession = sessionParam;
-            // Xác thực xem session này có hợp lệ trên server không
-            isUserAuthenticated = true; 
-            badge.innerText = "AUTHENTICATED (READY)";
-            badge.className = "badge badge-success";
-            genBtn.disabled = false;
-            warningBox.style.display = "none";
-        } else {
-            isUserAuthenticated = false;
-            badge.innerText = "UNAUTHENTICATED (BLOCKED)";
-            badge.className = "badge badge-error";
-            genBtn.disabled = true;
-            genBtn.innerText = "🔒 KHÓA - VUI LÒNG VƯỢT LINK ĐỂ MỞ";
-            genBtn.classList.add('disabled');
-            warningBox.style.display = "block";
+            if (sessionParam) {
+                currentSession = sessionParam;
+                isUserAuthenticated = true; 
+                badge.innerText = "AUTHENTICATED (READY)";
+                badge.className = "badge badge-success";
+                genBtn.disabled = false;
+                warningBox.style.display = "none";
+            } else {
+                isUserAuthenticated = false;
+                badge.innerText = "UNAUTHENTICATED (BLOCKED)";
+                badge.className = "badge badge-error";
+                genBtn.disabled = true;
+                genBtn.innerText = "🔒 KHÓA - VUI LÒNG VƯỢT LINK ĐỂ MỞ";
+                genBtn.classList.add('disabled');
+                warningBox.style.display = "block";
+            }
+        } catch (e) {
+            console.error("Lỗi chạy script:", e);
         }
     });
 
@@ -41,7 +44,6 @@
         genBtn.innerText = "ĐANG TẠO KEY...";
 
         try {
-            // Gửi kèm session lên API generate để server kiểm tra
             const response = await fetch(`/api/generate?session=${currentSession}`);
             const data = await response.json();
 
@@ -55,13 +57,13 @@
                 copyBtn.style.display = 'block';
                 genBtn.innerText = "✅ ĐÃ TẠO KEY THÀNH CÔNG";
             } else {
-                alert("Lỗi: " + (data.message || "Không thể tạo Key do phiên làm việc đã hết hạn hoặc không hợp lệ!"));
+                alert("Lỗi: " + (data.message || "Không thể tạo Key!"));
                 genBtn.disabled = false;
                 genBtn.innerText = "NHẬN KEY FREE (24H)";
             }
         } catch (error) {
             console.error(error);
-            alert("Lỗi kết nối API! Vui lòng tải lại trang.");
+            alert("Lỗi kết nối API!");
             genBtn.disabled = false;
             genBtn.innerText = "NHẬN KEY FREE (24H)";
         }
