@@ -16,7 +16,7 @@ export default function handler(req, res) {
 
     const cleanKey = key.trim();
 
-    // 1. Kiểm tra Key Premium (Vĩnh viễn, không tính thời gian hết hạn)
+    // 1. Kiểm tra Key Premium (Vĩnh viễn)
     if (PREMIUM_KEYS.includes(cleanKey)) {
         return res.status(200).json({ 
             valid: true, 
