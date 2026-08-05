@@ -1,4 +1,3 @@
-// Biến toàn cục tạm lưu token trên Serverless
 global.activeFreeTokens = global.activeFreeTokens || new Set();
 
 export default function handler(req, res) {
@@ -6,15 +5,14 @@ export default function handler(req, res) {
         return res.status(405).json({ success: false, message: 'Method not allowed' });
     }
 
-    // Tạo các phần ngẫu nhiên cho key
+    // Tạo các phần ngẫu nhiên
     const randomPart1 = Math.random().toString(36).substring(2, 6).toUpperCase();
     const randomPart2 = Math.random().toString(36).substring(2, 6).toUpperCase();
     const randomPart3 = Math.random().toString(36).substring(2, 6).toUpperCase();
 
-    // Định dạng: Cheem-xxxx-xxxx-xxxx
-    const newKey = `Cheem-${randomPart1}-${randomPart2}-${randomPart3}`;
+    // Định dạng mới theo yêu cầu: Freemium-xxxx-xxxx-xxxx
+    const newKey = `Freemium-${randomPart1}-${randomPart2}-${randomPart3}`;
     
-    // Lưu vào danh sách token hoạt động
     global.activeFreeTokens.add(newKey);
 
     return res.status(200).json({
