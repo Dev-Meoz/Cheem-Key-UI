@@ -5,7 +5,6 @@ export default function handler(req, res) {
         return res.status(405).json({ success: false, message: 'Method not allowed' });
     }
 
-    // Tạo key ngầm định dạng mới
     const randomPart1 = Math.random().toString(36).substring(2, 6).toUpperCase();
     const randomPart2 = Math.random().toString(36).substring(2, 6).toUpperCase();
     const randomPart3 = Math.random().toString(36).substring(2, 6).toUpperCase();
@@ -13,10 +12,11 @@ export default function handler(req, res) {
     const newKey = `Freemium-${randomPart1}-${randomPart2}-${randomPart3}`;
     global.activeFreeTokens.add(newKey);
 
-    // Trả về trạng thái tối giản, không lộ key ra ngoài API response trực tiếp
+    // Bắt buộc phải có trường "key" để index.html nhận diện và hiển thị cho người dùng copy
     return res.status(200).json({
         success: true,
+        key: newKey,
         status: "ONLINE",
-        message: "Key generated and registered successfully system online"
+        message: "Key generated successfully"
     });
 }
