@@ -121,7 +121,7 @@
     <div id="statusBadge" class="badge badge-error">UNAUTHENTICATED</div>
     
     <h2>CHEEM HUB - KEY SYSTEM</h2>
-    <p>Nhấp vào nút bên dưới để tạo Token xác thực sử dụng trong <b>24 Giờ</b>.<br>Định dạng: <i>Cheem-xxxx-xxxx-xxxx</i></p>
+    <p>Nhấp vào nút bên dưới để tạo mã khóa xác thực sử dụng trong <b>24 Giờ</b>.</p>
 
     <div id="unauthWarning" class="warning-box">
         ⚠️ <b>Truy cập không hợp lệ!</b><br>
@@ -133,11 +133,10 @@
     <div id="keyDisplay" class="key-box"></div>
     <button id="copyBtn" class="btn btn-copy" onclick="copyToken()">SAO CHÉP KEY</button>
 
-    <!-- HƯỚNG DẪN PREMIUM ĐÃ ĐƯỢC ẨN KEY THẬT -->
     <div class="guide-box">
         <b style="color: #fff;">👑 Dành cho người dùng Premium:</b><br>
         Nếu bạn đã sở hữu Key VIP, không cần vượt link! Hãy dán cú pháp sau lên đầu Executor để <b>Tự Động Vào Hub</b>:
-        <code>getgenv().Key = "KEY_PREMIUM_CUA_BAN_O_DAY"</code>
+        <code>getgenv().Key = "KEY_VIP_CUA_BAN"</code>
     </div>
 </div>
 
@@ -179,10 +178,9 @@
 
         const genBtn = document.getElementById('genBtn');
         genBtn.disabled = true;
-        genBtn.innerText = "ĐANG TẠO TOKEN...";
+        genBtn.innerText = "ĐANG TẠO KEY...";
 
         try {
-            // Gọi đến API của chính Vercel Server
             const response = await fetch('/api/generate');
             const data = await response.json();
 
