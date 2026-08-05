@@ -148,14 +148,27 @@
     window.addEventListener('DOMContentLoaded', () => {
         try {
             const urlParams = new URLSearchParams(window.location.search);
-            const sessionParam = urlParams.get('session');
+            let sessionParam = urlParams.get('session');
 
             const badge = document.getElementById('statusBadge');
             const genBtn = document.getElementById('genBtn');
             const warningBox = document.getElementById('unauthWarning');
 
+            // 1. Kiểm tra nếu URL có kèm session chuẩn xác
             if (sessionParam) {
                 currentSession = sessionParam;
+                localStorage.setItem('cheem_active_session', sessionParam);
+            } 
+            // 2. Nếu URL bị mất session (do link rút gọn lỗi), bốc lại từ bộ nhớ trình duyệt
+            else {
+                sessionParam = localStorage.getItem('cheem_active_session');
+                if (sessionParam) {
+                    currentSession = sessionParam;
+                }
+            }
+
+            // Kích hoạt trạng thái giao diện
+            if (currentSession) {
                 isUserAuthenticated = true; 
                 badge.innerText = "AUTHENTICATED (READY)";
                 badge.className = "badge badge-success";
@@ -198,6 +211,9 @@
                 display.innerText = currentToken;
                 copyBtn.style.display = 'block';
                 genBtn.innerText = "✅ ĐÃ TẠO KEY THÀNH CÔNG";
+                
+                // Xóa session đã dùng để chống spam
+                localStorage.removeItem('cheem_active_session');
             } else {
                 alert("Lỗi: " + (data.message || "Không thể tạo Key! Phiên làm việc đã hết hạn."));
                 genBtn.disabled = false;
