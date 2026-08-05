@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cheem Hub - Web Key Generator</title>
+    <style>
+        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body {
+            background: #0f0f13;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .card {
+            background: #181820;
+            border: 1px solid #2a2a35;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 480px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+            text-align: center;
+        }
+        h2 { color: #f39c12; margin-top: 0; letter-spacing: 1px; }
+        p { color: #a0a0b0; font-size: 14px; line-height: 1.5; }
+        
+        /* Huy hiệu trạng thái */
+        .badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            letter-spacing: 0.5px;
+        }
+        .badge-success { background: #27ae60; color: #fff; }
+        .badge-error { background: #e74c3c; color: #fff; }
+        
+        /* Nút chính */
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            background: #3498db;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 15px;
+        }
+        .btn:hover { background: #2980b9; }
+        
+        /* Trạng thái khóa (màu xám) */
+        .btn:disabled, .btn.disabled {
+            background: #3a3a42 !important;
+            color: #888890 !important;
+            cursor: not-allowed;
+            border: 1px dashed #555;
+        }
+
+        .btn-copy {
+            background: #2ecc71;
+            margin-top: 10px;
+            display: none;
+        }
+        .btn-copy:hover { background: #27ae60; }
+        
+        /* Ô hiển thị Key */
+        .key-box {
+            margin-top: 20px;
+            padding: 15px;
+            background: #101015;
+            border: 1px dashed #f39c12;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 18px;
+            color: #f39c12;
+            word-break: break-all;
+            display: none;
+        }
+        
+        /* Hướng dẫn */
+        .guide-box {
+            margin-top: 25px;
+            padding: 15px;
+            background: #1e1e28;
+            border-left: 4px solid #e67e22;
+            border-radius: 4px;
+            text-align: left;
+            font-size: 13px;
+        }
+        .guide-box code {
+            background: #101015;
+            padding: 3px 6px;
+            border-radius: 4px;
+            color: #e67e22;
+            display: block;
+            margin-top: 8px;
+            user-select: all;
+        }
+
+        /* Hộp cảnh báo khi truy cập thẳng */
+        .warning-box {
+            display: none;
+            margin-top: 15px;
+            padding: 12px;
+            background: rgba(231, 76, 60, 0.15);
+            border: 1px solid #e74c3c;
+            border-radius: 6px;
+            color: #ff7675;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <!-- Huy hiệu xác thực sẽ đổi trạng thái bằng JS -->
+    <div id="statusBadge" class="badge badge-error">UNAUTHENTICATED</div>
+    
+    <h2>CHEEM HUB - KEY SYSTEM</h2>
+    <p>Nhấp vào nút bên dưới để tạo Token xác thực sử dụng trong <b>24 Giờ</b>.<br>Định dạng: <i>Cheem-xxxx-xxxx-xxxx</i></p>
+
+    <!-- Hộp cảnh báo nếu không vượt link -->
+    <div id="unauthWarning" class="warning-box">
+        ⚠️ <b>Truy cập không hợp lệ!</b><br>
+        Bạn chưa vượt quảng cáo từ Work.ink hoặc LootLab. Vui lòng quay lại game và lấy link Get Key chính thức!
+    </div>
+
+    <!-- Nút tạo Key -->
+    <button id="genBtn" class="btn" onclick="generateToken()">NHẬN KEY FREE (24H)</button>
+    
+    <div id="keyDisplay" class="key-box"></div>
+    <button id="copyBtn" class="btn btn-copy" onclick="copyToken()">SAO CHÉP KEY</button>
+
+    <div class="guide-box">
+        <b style="color: #fff;">👑 Dành cho người dùng Premium:</b><br>
+        Bạn không cần vượt link! Có thể dán Key trực tiếp vào Executor để <b>Tự Động Đăng Nhập (Bỏ qua GUI)</b>:
+        <code>getgenv().Key = "Ch33m-22Bv-66Yb-UUHB-Premium"</code>
+    </div>
+</div>
+
+<script>
+    let currentToken = "";
+    let isUserAuthenticated = false;
+
+    // [1] KIỂM TRA TRẠNG THÁI XÁC THỰC KHI TẢI TRANG
+    window.addEventListener('DOMContentLoaded', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        
+        // Kiểm tra xem URL có đuôi "?auth=true" hoặc "?ref=workink" / "?ref=lootlab" không
+        const authParam = urlParams.get('auth');
+        const refParam = urlParams.get('ref');
+
+        const badge = document.getElementById('statusBadge');
+        const genBtn = document.getElementById('genBtn');
+        const warningBox = document.getElementById('unauthWarning');
+
+        if (authParam === 'true' || refParam === 'workink' || refParam === 'lootlab') {
+            // Trường hợp HỢP LỆ (Đã đi qua LootLab / Work.ink)
+            isUserAuthenticated = true;
+            badge.innerText = "AUTHENTICATED (READY)";
+            badge.className = "badge badge-success";
+            genBtn.disabled = false;
+            warningBox.style.display = "none";
+        } else {
+            // Trường hợp TRUY CẬP THẲNG (Ăn gian) -> Khóa nút thành màu xám
+            isUserAuthenticated = false;
+            badge.innerText = "UNAUTHENTICATED (BLOCKED)";
+            badge.className = "badge badge-error";
+            
+            genBtn.disabled = true;
+            genBtn.innerText = "🔒 KHÓA - VUI LÒNG VƯỢT LINK ĐỂ MỞ";
+            genBtn.classList.add('disabled');
+            warningBox.style.display = "block";
+        }
+    });
+
+    // [2] HÀM TẠO TOKEN TỪ SERVER
+    async function generateToken() {
+        // Chặn bảo vệ thêm lần nữa ở JS
+        if (!isUserAuthenticated) {
+            alert("Bạn chưa xác thực! Vui lòng vượt link từ Work.ink hoặc LootLab.");
+            return;
+        }
+
+        const genBtn = document.getElementById('genBtn');
+        genBtn.disabled = true;
+        genBtn.innerText = "ĐANG TẠO TOKEN TỪ SERVER...";
+
+        try {
+            const response = await fetch('/api/generate');
+            const data = await response.json();
+
+            if (data.success) {
+                currentToken = data.key;
+                const display = document.getElementById('keyDisplay');
+                const copyBtn = document.getElementById('copyBtn');
+
+                display.style.display = 'block';
+                display.innerText = currentToken;
+                copyBtn.style.display = 'block';
+                genBtn.innerText = "✅ ĐÃ TẠO KEY THÀNH CÔNG";
+            } else {
+                alert("Lỗi khi tạo Key từ Server!");
+                genBtn.disabled = false;
+                genBtn.innerText = "NHẬN KEY FREE (24H)";
+            }
+        } catch (error) {
+            alert("Không thể kết nối đến Server API!");
+            genBtn.disabled = false;
+            genBtn.innerText = "NHẬN KEY FREE (24H)";
+        }
+    }
+
+    // [3] HÀM COPY KEY
+    function copyToken() {
+        if (!currentToken) return;
+        navigator.clipboard.writeText(currentToken).then(() => {
+            const btn = document.getElementById('copyBtn');
+            btn.innerText = "✅ ĐÃ SAO CHÉP KEY!";
+            btn.style.background = "#e67e22";
+            setTimeout(() => {
+                btn.innerText = "SAO CHÉP KEY";
+                btn.style.background = "#2ecc71";
+            }, 2000);
+        });
+    }
+</script>
+
+</body>
+</html>
